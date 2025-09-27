@@ -1,35 +1,28 @@
-/**
- * LicenseChain JavaScript SDK
- * 
- * Official JavaScript SDK for LicenseChain - a comprehensive license management platform.
- */
-
+// Main exports
 export { LicenseChainClient } from './client';
-export { LicenseValidator } from './license-validator';
-export { WebhookVerifier, WebhookHandler } from './webhook-verifier';
+export { Configuration, ConfigurationOptions } from './configuration';
+export { ApiClient } from './api-client';
 
-// Models
-export type {
-  User,
-  Application,
-  License,
-  Webhook,
-  Analytics,
-  PaginatedResponse,
-  ValidationResult,
-  LicenseChainConfig,
-} from './types';
+// Services
+export { LicenseService } from './services/license-service';
+export { UserService } from './services/user-service';
+export { ProductService } from './services/product-service';
+export { WebhookService } from './services/webhook-service';
+
+// Webhook handling
+export { WebhookHandler, WebhookEvents, createOutgoingWebhookSignature, verifyIncomingWebhookSignature } from './webhook-handler';
+
+// License validation
+export { LicenseValidator } from './license-validator';
+
+// Types
+export * from './types';
 
 // Exceptions
-export {
-  LicenseChainException,
-  AuthenticationError,
-  ValidationError,
-  NotFoundError,
-  RateLimitError,
-  ServerError,
-  NetworkError,
-} from './exceptions';
+export * from './exceptions';
 
-// Version
-export const VERSION = '1.0.0';
+// Utilities
+export * from './utils';
+
+// Default export
+export { LicenseChainClient as default } from './client';
