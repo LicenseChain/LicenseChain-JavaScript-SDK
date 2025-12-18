@@ -84,8 +84,9 @@ export class LicenseService {
   async validate(licenseKey: string): Promise<boolean> {
     validateNotEmpty(licenseKey, 'license_key');
     
-    const response = await this.client.post<{ valid: boolean }>('/licenses/validate', { 
-      license_key: licenseKey 
+    // Use /licenses/verify endpoint with 'key' parameter to match API
+    const response = await this.client.post<{ valid: boolean }>('/licenses/verify', { 
+      key: licenseKey 
     });
     return response.valid || false;
   }
