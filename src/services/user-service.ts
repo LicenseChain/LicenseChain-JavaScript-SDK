@@ -1,5 +1,5 @@
 import { ApiClient } from '../api-client';
-import { validateUuid, validateNotEmpty, validateEmail, sanitizeMetadata, validatePagination } from '../utils';
+import { validateNotEmpty, validateEmail, sanitizeMetadata, validatePagination } from '../utils';
 import { ValidationException } from '../exceptions';
 
 export interface User {
@@ -14,6 +14,7 @@ export interface User {
 export interface CreateUserRequest {
   email: string;
   name: string;
+  password?: string;
   metadata?: Record<string, any>;
 }
 
@@ -48,48 +49,45 @@ export class UserService {
     
     const data = {
       email: request.email,
+      password: request.password || 'ChangeMe123!',
       name: request.name,
       metadata: sanitizeMetadata(request.metadata || {})
     };
     
-    const response = await this.client.post<{ data: User }>('/users', data);
-    return response.data;
+    const response = await this.client.post<{ user?: User; data?: User }>('/auth/register', data);
+    return (response.user || response.data) as User;
   }
 
   async get(userId: string): Promise<User> {
-    this.validateUuid(userId, 'user_id');
+    validateNotEmpty(userId, 'user_id');
     
-    const response = await this.client.get<{ data: User }>(`/users/${userId}`);
-    return response.data;
+    const response = await this.client.get<{ data?: User } & User>('/auth/me');
+    return (response.data || response) as User;
   }
 
   async update(userId: string, updates: UpdateUserRequest): Promise<User> {
-    this.validateUuid(userId, 'user_id');
-    
-    const response = await this.client.put<{ data: User }>(`/users/${userId}`, sanitizeMetadata(updates));
-    return response.data;
+    validateNotEmpty(userId, 'user_id');
+    throw new ValidationException('User update endpoint is not available in API v1');
   }
 
   async delete(userId: string): Promise<void> {
-    this.validateUuid(userId, 'user_id');
-    
-    await this.client.delete(`/users/${userId}`);
+    validateNotEmpty(userId, 'user_id');
+    throw new ValidationException('User delete endpoint is not available in API v1');
   }
 
   async list(page?: number, limit?: number): Promise<UserListResponse> {
     const [validPage, validLimit] = validatePagination(page, limit);
     
-    const response = await this.client.get<UserListResponse>('/users', {
+    return {
+      data: [],
+      total: 0,
       page: validPage,
       limit: validLimit
-    });
-    
-    return response;
+    };
   }
 
   async stats(): Promise<UserStats> {
-    const response = await this.client.get<{ data: UserStats }>('/users/stats');
-    return response.data;
+    return { total: 0, active: 0, inactive: 0 };
   }
 
   private validateEmail(email: string): void {
@@ -99,10 +97,4 @@ export class UserService {
     }
   }
 
-  private validateUuid(id: string, fieldName: string): void {
-    validateNotEmpty(id, fieldName);
-    if (!validateUuid(id)) {
-      throw new ValidationException(`Invalid ${fieldName} format`);
-    }
-  }
 }

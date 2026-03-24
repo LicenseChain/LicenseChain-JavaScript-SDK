@@ -147,7 +147,7 @@ export class LicenseValidator {
 
     if (rules.allowedFeatures && result.license?.features) {
       const invalidFeatures = result.license.features.filter(
-        feature => !rules.allowedFeatures!.includes(feature)
+        (feature: string) => !rules.allowedFeatures!.includes(feature)
       );
       if (invalidFeatures.length > 0) {
         return {

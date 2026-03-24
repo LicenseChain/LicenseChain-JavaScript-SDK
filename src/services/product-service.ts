@@ -1,5 +1,5 @@
 import { ApiClient } from '../api-client';
-import { validateUuid, validateNotEmpty, validatePositive, validateCurrency, sanitizeMetadata, validatePagination } from '../utils';
+import { validateNotEmpty, validatePositive, validateCurrency, validatePagination } from '../utils';
 import { ValidationException } from '../exceptions';
 
 export interface Product {
@@ -51,53 +51,37 @@ export class ProductService {
 
   async create(request: CreateProductRequest): Promise<Product> {
     this.validateRequiredParams(request.name, request.price, request.currency);
-    
-    const data = {
-      name: request.name,
-      description: request.description,
-      price: request.price,
-      currency: request.currency,
-      metadata: sanitizeMetadata(request.metadata || {})
-    };
-    
-    const response = await this.client.post<{ data: Product }>('/products', data);
-    return response.data;
+    throw new ValidationException('Product endpoints are not available in API v1');
   }
 
   async get(productId: string): Promise<Product> {
-    this.validateUuid(productId, 'product_id');
-    
-    const response = await this.client.get<{ data: Product }>(`/products/${productId}`);
-    return response.data;
+    validateNotEmpty(productId, 'product_id');
+    throw new ValidationException('Product endpoints are not available in API v1');
   }
 
   async update(productId: string, updates: UpdateProductRequest): Promise<Product> {
-    this.validateUuid(productId, 'product_id');
-    
-    const response = await this.client.put<{ data: Product }>(`/products/${productId}`, sanitizeMetadata(updates));
-    return response.data;
+    validateNotEmpty(productId, 'product_id');
+    throw new ValidationException('Product endpoints are not available in API v1');
   }
 
   async delete(productId: string): Promise<void> {
-    this.validateUuid(productId, 'product_id');
-    
-    await this.client.delete(`/products/${productId}`);
+    validateNotEmpty(productId, 'product_id');
+    throw new ValidationException('Product endpoints are not available in API v1');
   }
 
   async list(page?: number, limit?: number): Promise<ProductListResponse> {
     const [validPage, validLimit] = validatePagination(page, limit);
     
-    const response = await this.client.get<ProductListResponse>('/products', {
+    return {
+      data: [],
+      total: 0,
       page: validPage,
       limit: validLimit
-    });
-    
-    return response;
+    };
   }
 
   async stats(): Promise<ProductStats> {
-    const response = await this.client.get<{ data: ProductStats }>('/products/stats');
-    return response.data;
+    return { total: 0, active: 0, revenue: 0 };
   }
 
   private validateRequiredParams(name: string, price: number, currency: string): void {
@@ -110,10 +94,4 @@ export class ProductService {
     }
   }
 
-  private validateUuid(id: string, fieldName: string): void {
-    validateNotEmpty(id, fieldName);
-    if (!validateUuid(id)) {
-      throw new ValidationException(`Invalid ${fieldName} format`);
-    }
-  }
 }

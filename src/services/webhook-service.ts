@@ -46,22 +46,22 @@ export class WebhookService {
       secret: request.secret
     };
     
-    const response = await this.client.post<{ data: Webhook }>('/webhooks', data);
-    return response.data;
+    const response = await this.client.post<{ data?: Webhook }>('/webhooks', data);
+    return this.normalizeWebhookPayload((response.data || response) as any);
   }
 
   async get(webhookId: string): Promise<Webhook> {
     this.validateUuid(webhookId, 'webhook_id');
     
-    const response = await this.client.get<{ data: Webhook }>(`/webhooks/${webhookId}`);
-    return response.data;
+    const response = await this.client.get<{ data?: Webhook }>(`/webhooks/${webhookId}`);
+    return this.normalizeWebhookPayload((response.data || response) as any);
   }
 
   async update(webhookId: string, updates: UpdateWebhookRequest): Promise<Webhook> {
     this.validateUuid(webhookId, 'webhook_id');
     
-    const response = await this.client.put<{ data: Webhook }>(`/webhooks/${webhookId}`, sanitizeMetadata(updates));
-    return response.data;
+    const response = await this.client.put<{ data?: Webhook }>(`/webhooks/${webhookId}`, sanitizeMetadata(updates));
+    return this.normalizeWebhookPayload((response.data || response) as any);
   }
 
   async delete(webhookId: string): Promise<void> {
@@ -71,8 +71,14 @@ export class WebhookService {
   }
 
   async list(): Promise<WebhookListResponse> {
-    const response = await this.client.get<WebhookListResponse>('/webhooks');
-    return response;
+    const response = await this.client.get<any>('/webhooks');
+    const data = (response?.data || []).map((webhook: any) => this.normalizeWebhookPayload(webhook));
+    return {
+      data,
+      total: response?.pagination?.total || data.length,
+      page: response?.pagination?.page || 1,
+      limit: response?.pagination?.limit || data.length
+    };
   }
 
   private validateWebhookParams(url: string, events: string[]): void {
@@ -87,5 +93,16 @@ export class WebhookService {
     if (!validateUuid(id)) {
       throw new ValidationException(`Invalid ${fieldName} format`);
     }
+  }
+
+  private normalizeWebhookPayload(payload: any): Webhook {
+    return {
+      id: payload?.id,
+      url: payload?.url || '',
+      events: payload?.events || [],
+      secret: payload?.secret,
+      created_at: payload?.created_at || payload?.createdAt,
+      updated_at: payload?.updated_at || payload?.updatedAt
+    };
   }
 }

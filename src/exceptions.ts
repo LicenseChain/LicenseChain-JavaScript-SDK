@@ -161,6 +161,15 @@ export class TimeoutError extends LicenseChainException {
   }
 }
 
+// Backward-compatible aliases used by existing SDK modules.
+export const NetworkException = NetworkError;
+export const ServerException = ServerError;
+export const ValidationException = ValidationError;
+export const AuthenticationException = AuthenticationError;
+export const NotFoundException = NotFoundError;
+export const RateLimitException = RateLimitError;
+export const ConfigurationException = ConfigurationError;
+
 /**
  * Error factory for creating appropriate exceptions based on HTTP status codes
  */

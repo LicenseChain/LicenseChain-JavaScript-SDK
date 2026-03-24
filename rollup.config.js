@@ -4,11 +4,12 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 import dts from 'rollup-plugin-dts';
+import fs from 'node:fs';
 
-const packageJson = require('./package.json');
+const packageJson = JSON.parse(fs.readFileSync(new URL('./package.json', import.meta.url), 'utf8'));
 
 const baseConfig = {
-  input: 'src/index.js',
+  input: 'src/index.ts',
   external: ['axios', 'crypto-js'],
   plugins: [
     nodeResolve({

@@ -32,8 +32,8 @@ async function basicUsageExample() {
     };
     
     const license = await client.getLicenses().create({
-      user_id: 'user123',
-      product_id: 'product456',
+      app_id: 'app_123',
+      issued_email: 'buyer@example.com',
       metadata
     });
     console.log(`✅ License created: ${license.id}`);
@@ -86,30 +86,7 @@ async function basicUsageExample() {
     
     // 3. Product Management
     console.log('\n📦 Product Management:');
-    
-    // Create a product
-    const productMetadata = {
-      category: 'software',
-      tags: ['premium', 'enterprise']
-    };
-    
-    const product = await client.getProducts().create({
-      name: 'My Software Product',
-      description: 'A great software product',
-      price: 99.99,
-      currency: 'USD',
-      metadata: productMetadata
-    });
-    console.log(`✅ Product created: ${product.id}`);
-    console.log(`   Name: ${product.name}`);
-    console.log(`   Price: $${product.price} ${product.currency}`);
-    
-    // Get product stats
-    const productStats = await client.getProducts().stats();
-    console.log('\n📊 Product Statistics:');
-    console.log(`   Total: ${productStats.total}`);
-    console.log(`   Active: ${productStats.active}`);
-    console.log(`   Revenue: $${productStats.revenue}`);
+    console.log('ℹ️ Product endpoints are not available in the current API v1 surface.');
     
     // 4. Webhook Management
     console.log('\n🔗 Webhook Management:');

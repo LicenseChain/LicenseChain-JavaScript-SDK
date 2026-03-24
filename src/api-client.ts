@@ -1,12 +1,12 @@
 import { Configuration } from './configuration';
 import { retryWithBackoff, jsonSerialize, jsonDeserialize } from './utils';
 import { 
-  NetworkException, 
-  ServerException, 
-  ValidationException, 
-  AuthenticationException, 
-  NotFoundException, 
-  RateLimitException 
+  NetworkError, 
+  ServerError, 
+  ValidationError, 
+  AuthenticationError, 
+  NotFoundError, 
+  RateLimitError 
 } from './exceptions';
 
 export class ApiClient {
@@ -28,6 +28,10 @@ export class ApiClient {
 
   async put<T = any>(endpoint: string, data?: any): Promise<T> {
     return this.makeRequest<T>('PUT', endpoint, data);
+  }
+
+  async patch<T = any>(endpoint: string, data?: any): Promise<T> {
+    return this.makeRequest<T>('PATCH', endpoint, data);
   }
 
   async delete<T = any>(endpoint: string, data?: any): Promise<T> {
@@ -56,7 +60,7 @@ export class ApiClient {
         ? `/v1${endpoint}`
         : `/v1/${endpoint}`;
     
-    let url = `${this.baseUrl}${normalizedEndpoint}`.replace(/\/+/g, '/');
+    let url = `${this.baseUrl}${normalizedEndpoint}`;
     
     if (params && Object.keys(params).length > 0) {
       const searchParams = new URLSearchParams();
@@ -116,9 +120,9 @@ export class ApiClient {
     } catch (error) {
       if (error instanceof Error) {
         if (error.name === 'AbortError') {
-          throw new NetworkException('Request timeout');
+          throw new NetworkError('Request timeout');
         }
-        throw new NetworkException(error.message);
+        throw new NetworkError(error.message);
       }
       throw error;
     }
@@ -127,27 +131,27 @@ export class ApiClient {
   private handleHttpError(statusCode: number, message: string): never {
     switch (statusCode) {
       case 400:
-        throw new ValidationException(`Bad Request: ${message}`);
+        throw new ValidationError(`Bad Request: ${message}`);
       case 401:
-        throw new AuthenticationException(`Unauthorized: ${message}`);
+        throw new AuthenticationError(`Unauthorized: ${message}`);
       case 403:
-        throw new AuthenticationException(`Forbidden: ${message}`);
+        throw new AuthenticationError(`Forbidden: ${message}`);
       case 404:
-        throw new NotFoundException(`Not Found: ${message}`);
+        throw new NotFoundError(`Not Found: ${message}`);
       case 429:
-        throw new RateLimitException(`Rate Limited: ${message}`);
+        throw new RateLimitError(`Rate Limited: ${message}`);
       case 500:
       case 502:
       case 503:
       case 504:
-        throw new ServerException(`Server Error: ${message}`);
+        throw new ServerError(`Server Error: ${message}`);
       default:
-        throw new ServerException(`Unexpected response: ${statusCode} ${message}`);
+        throw new ServerError(`Unexpected response: ${statusCode} ${message}`);
     }
   }
 
   async ping(): Promise<any> {
-    return this.get('/ping');
+    return this.get('/health');
   }
 
   async health(): Promise<any> {

@@ -1,6 +1,7 @@
 import { ApiClient } from '../api-client';
-import { validateUuid, validateNotEmpty, sanitizeMetadata, validatePagination } from '../utils';
+import { validateNotEmpty, sanitizeMetadata, validatePagination } from '../utils';
 import { ValidationException } from '../exceptions';
+import { createHash } from 'crypto';
 
 export interface License {
   id: string;
@@ -15,8 +16,12 @@ export interface License {
 }
 
 export interface CreateLicenseRequest {
-  user_id: string;
-  product_id: string;
+  user_id?: string;
+  product_id?: string;
+  app_id?: string;
+  plan?: 'FREE' | 'PRO' | 'BUSINESS' | 'ENTERPRISE';
+  issued_email?: string;
+  expires_at?: string;
   metadata?: Record<string, any>;
 }
 
@@ -49,75 +54,95 @@ export class LicenseService {
   }
 
   async create(request: CreateLicenseRequest): Promise<License> {
-    this.validateRequiredParams(request.user_id, request.product_id);
-    
+    const appId = request.app_id;
+    if (!appId) {
+      throw new ValidationException('app_id is required for API v1 license creation');
+    }
+
     const data = {
-      user_id: request.user_id,
-      product_id: request.product_id,
-      metadata: sanitizeMetadata(request.metadata || {})
+      appId,
+      plan: request.plan || 'FREE',
+      issuedEmail: request.issued_email,
+      expiresAt: request.expires_at
     };
     
-    const response = await this.client.post<{ data: License }>('/licenses', data);
-    return response.data;
+    const response = await this.client.post<License>(`/apps/${appId}/licenses`, data);
+    return this.extractLicenseResponse(response);
   }
 
   async get(licenseId: string): Promise<License> {
-    this.validateUuid(licenseId, 'license_id');
+    validateNotEmpty(licenseId, 'license_id');
     
-    const response = await this.client.get<{ data: License }>(`/licenses/${licenseId}`);
-    return response.data;
+    const response = await this.client.get<License>(`/licenses/${licenseId}`);
+    return this.extractLicenseResponse(response);
   }
 
   async update(licenseId: string, updates: UpdateLicenseRequest): Promise<License> {
-    this.validateUuid(licenseId, 'license_id');
+    validateNotEmpty(licenseId, 'license_id');
     
-    const response = await this.client.put<{ data: License }>(`/licenses/${licenseId}`, sanitizeMetadata(updates));
-    return response.data;
+    const response = await this.client.patch<License>(`/licenses/${licenseId}`, sanitizeMetadata(updates));
+    return this.extractLicenseResponse(response);
   }
 
   async revoke(licenseId: string): Promise<void> {
-    this.validateUuid(licenseId, 'license_id');
+    validateNotEmpty(licenseId, 'license_id');
     
     await this.client.delete(`/licenses/${licenseId}`);
   }
 
-  async validate(licenseKey: string): Promise<boolean> {
+  async validate(licenseKey: string, hwuid?: string | null): Promise<boolean> {
     validateNotEmpty(licenseKey, 'license_key');
-    
-    // Use /licenses/verify endpoint with 'key' parameter to match API
-    const response = await this.client.post<{ valid: boolean }>('/licenses/verify', { 
-      key: licenseKey 
-    });
+    const body: { key: string; hwuid?: string } = { key: licenseKey };
+    body.hwuid = hwuid != null && String(hwuid).trim() !== '' ? hwuid.trim() : this.defaultHwuid();
+    const response = await this.client.post<{ valid: boolean }>('/licenses/verify', body);
     return response.valid || false;
   }
 
   async listUserLicenses(userId: string, page?: number, limit?: number): Promise<LicenseListResponse> {
-    this.validateUuid(userId, 'user_id');
+    validateNotEmpty(userId, 'user_id');
     const [validPage, validLimit] = validatePagination(page, limit);
     
-    const response = await this.client.get<LicenseListResponse>('/licenses', {
-      user_id: userId,
+    const response = await this.client.get<{ licenses?: License[]; data?: License[] }>('/licenses', {
       page: validPage,
       limit: validLimit
     });
+
+    const allLicenses = response.licenses || response.data || [];
+    const filtered = allLicenses.filter((license: any) =>
+      license?.issuedEmail === userId ||
+      license?.email === userId ||
+      license?.user_id === userId
+    );
     
-    return response;
+    return {
+      data: filtered,
+      total: filtered.length,
+      page: validPage,
+      limit: validLimit
+    };
   }
 
   async stats(): Promise<LicenseStats> {
-    const response = await this.client.get<{ data: LicenseStats }>('/licenses/stats');
-    return response.data;
+    const response = await this.client.get<{ data?: LicenseStats } & LicenseStats>('/licenses/stats');
+    return response.data || response;
   }
 
-  private validateRequiredParams(userId: string, productId: string): void {
-    validateNotEmpty(userId, 'user_id');
-    validateNotEmpty(productId, 'product_id');
+  private extractLicenseResponse(response: any): License {
+    return response?.data ? response.data : response;
   }
 
-  private validateUuid(id: string, fieldName: string): void {
-    validateNotEmpty(id, fieldName);
-    if (!validateUuid(id)) {
-      throw new ValidationException(`Invalid ${fieldName} format`);
+  private defaultHwuid(): string {
+    const g: any = globalThis as any;
+    if (g?.navigator) {
+      return createHash('sha256')
+        .update(`licensechain|js-browser|${g.navigator.userAgent}|${g.navigator.language}|${g.navigator.platform || 'unknown'}`)
+        .digest('hex');
     }
+    if (typeof process !== 'undefined') {
+      return createHash('sha256')
+        .update(`licensechain|js-node|${process.platform}|${process.arch}|${process.version}`)
+        .digest('hex');
+    }
+    return createHash('sha256').update('licensechain|js|unknown|unknown|unknown').digest('hex');
   }
 }
