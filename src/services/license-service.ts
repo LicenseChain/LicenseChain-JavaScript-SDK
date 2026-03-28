@@ -98,6 +98,14 @@ export class LicenseService {
     return response.valid || false;
   }
 
+  /** Full POST /v1/licenses/verify JSON (optional license_token / license_jwks_uri). */
+  async verifyWithDetails(licenseKey: string, hwuid?: string | null): Promise<Record<string, unknown>> {
+    validateNotEmpty(licenseKey, 'license_key');
+    const body: { key: string; hwuid?: string } = { key: licenseKey };
+    body.hwuid = hwuid != null && String(hwuid).trim() !== '' ? hwuid.trim() : this.defaultHwuid();
+    return this.client.post<Record<string, unknown>>('/licenses/verify', body);
+  }
+
   async listUserLicenses(userId: string, page?: number, limit?: number): Promise<LicenseListResponse> {
     validateNotEmpty(userId, 'user_id');
     const [validPage, validLimit] = validatePagination(page, limit);
