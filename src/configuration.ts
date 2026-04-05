@@ -13,7 +13,7 @@ export class Configuration {
 
   constructor(options: ConfigurationOptions) {
     this.apiKey = options.apiKey;
-    this.baseUrl = options.baseUrl || 'https://api.licensechain.app';
+    this.baseUrl = options.baseUrl || 'https://api.licensechain.app/v1';
     this.timeout = options.timeout || 30000; // 30 seconds
     this.retries = options.retries || 3;
   }
@@ -74,7 +74,7 @@ export class Configuration {
   static fromEnvironment(): Configuration {
     return new Configuration({
       apiKey: process.env.LICENSECHAIN_API_KEY || '',
-      baseUrl: process.env.LICENSECHAIN_BASE_URL || 'https://api.licensechain.app',
+      baseUrl: process.env.LICENSECHAIN_BASE_URL || 'https://api.licensechain.app/v1',
       timeout: parseInt(process.env.LICENSECHAIN_TIMEOUT || '30000'),
       retries: parseInt(process.env.LICENSECHAIN_RETRIES || '3')
     });

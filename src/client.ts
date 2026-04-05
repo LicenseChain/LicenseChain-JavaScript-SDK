@@ -70,7 +70,7 @@ export class LicenseChainClient {
   static create(apiKey: string, baseUrl?: string): LicenseChainClient {
     return new LicenseChainClient({
       apiKey,
-      baseUrl: baseUrl || 'https://api.licensechain.app'
+      baseUrl: baseUrl || 'https://api.licensechain.app/v1'
     });
   }
 

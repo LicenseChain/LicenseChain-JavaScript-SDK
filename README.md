@@ -7,6 +7,16 @@
 
 Official JavaScript SDK for LicenseChain - Secure license management for web applications.
 
+> Consolidation note: use `LicenseChain-JavaScript-SDK` for browser and isomorphic code. `LicenseChain-NodeJS-SDK` remains the server-only track while the shared HTTP layer is consolidated under the workspace plan in `../docs/SDK_CONSOLIDATION.md`.
+
+## API Base
+
+- Canonical API base: `https://api.licensechain.app/v1`
+- Dashboard reference: [LicenseChain/Dashboard](https://github.com/LicenseChain/Dashboard)
+- Core API reference: [LicenseChain/api](https://github.com/LicenseChain/api)
+- SDK governance: [SDK_GOVERNANCE.md](../SDK_GOVERNANCE.md)
+- Workspace conformance: [conformance/README.md](../conformance/README.md)
+
 ## 🚀 Features
 
 - **🔐 Secure Authentication** - User registration, login, and session management
@@ -59,7 +69,8 @@ import LicenseChain from 'licensechain-sdk';
 const client = new LicenseChain({
   apiKey: 'your-api-key',
   appName: 'your-app-name',
-  version: '1.0.0'
+  version: '1.0.0',
+  baseUrl: 'https://api.licensechain.app/v1'
 });
 
 // Connect to LicenseChain
@@ -167,7 +178,7 @@ await client.startWebhookListener();
 
 ## 📚 API Endpoints
 
-All endpoints automatically use the `/v1` prefix when connecting to `https://api.licensechain.app`.
+All endpoints target the LicenseChain HTTP API at `https://api.licensechain.app/v1`. The client accepts either the canonical `/v1` base or the root host and normalizes requests to the same API version.
 
 ### Base URL
 - **Production**: `https://api.licensechain.app/v1`
@@ -201,7 +212,7 @@ const client = new LicenseChain({
   apiKey: 'your-api-key',
   appName: 'your-app-name',
   version: '1.0.0',
-  baseUrl: 'https://api.licensechain.app' // Optional
+  baseUrl: 'https://api.licensechain.app/v1' // Optional
 });
 ```
 
@@ -307,7 +318,7 @@ export LICENSECHAIN_APP_NAME=your-app-name
 export LICENSECHAIN_APP_VERSION=1.0.0
 
 # Optional
-export LICENSECHAIN_BASE_URL=https://api.licensechain.app
+export LICENSECHAIN_BASE_URL=https://api.licensechain.app/v1
 export LICENSECHAIN_DEBUG=true
 ```
 
@@ -318,7 +329,7 @@ const client = new LicenseChain({
   apiKey: 'your-api-key',
   appName: 'your-app-name',
   version: '1.0.0',
-  baseUrl: 'https://api.licensechain.app',
+  baseUrl: 'https://api.licensechain.app/v1',
   timeout: 30000,        // Request timeout in milliseconds
   retries: 3,            // Number of retry attempts
   debug: false,          // Enable debug logging
@@ -469,7 +480,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🆘 Support
 
-- **Documentation**: [https://docs.licensechain.app/javascript](https://docs.licensechain.app/javascript)
+- **Documentation**: [https://docs.licensechain.app/sdks/javascript](https://docs.licensechain.app/sdks/javascript)
 - **Issues**: [GitHub Issues](https://github.com/LicenseChain/LicenseChain-JavaScript-SDK/issues)
 - **Discord**: [LicenseChain Discord](https://discord.gg/licensechain)
 - **Email**: support@licensechain.app
