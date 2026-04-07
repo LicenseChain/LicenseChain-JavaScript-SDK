@@ -10,7 +10,7 @@ const packageJson = JSON.parse(fs.readFileSync(new URL('./package.json', import.
 
 const baseConfig = {
   input: 'src/index.ts',
-  external: ['axios', 'crypto-js'],
+  external: ['axios', 'crypto-js', 'jose'],
   plugins: [
     nodeResolve({
       preferBuiltins: false,

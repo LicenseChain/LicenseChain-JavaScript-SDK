@@ -17,6 +17,19 @@ Official JavaScript SDK for LicenseChain - Secure license management for web app
 - SDK governance: [SDK_GOVERNANCE.md](../SDK_GOVERNANCE.md)
 - Workspace conformance: [conformance/README.md](../conformance/README.md)
 
+## License assertion JWT (RS256 + JWKS)
+
+Root exports match **`licensechain-node-sdk`**: `verifyLicenseAssertionJwt`, `LICENSE_TOKEN_USE_CLAIM`, and `VerifyLicenseAssertionOptions` (TypeScript). Use them after `LicenseService.verifyWithDetails` when the API returns `license_token` and `license_jwks_uri`.
+
+```javascript
+import { verifyLicenseAssertionJwt } from 'licensechain-js-sdk';
+// or: const { verifyLicenseAssertionJwt } = require('licensechain-js-sdk');
+```
+
+`jose` is a **runtime dependency** (listed in `package.json`); CJS/ESM builds load it from `node_modules`. Legacy **`require('licensechain-js-sdk/license-assertion.cjs')`** still works and delegates to the same implementation.
+
+**UMD / CDN:** `dist/index.umd.js` treats `jose` as external; browser bundles that call `verifyLicenseAssertionJwt` must load a compatible `jose` build or use ESM with a bundler that resolves `jose`. Prefer **Node** or **bundled ESM** for JWT verification in production.
+
 ## 🚀 Features
 
 - **🔐 Secure Authentication** - User registration, login, and session management

@@ -1,36 +1,12 @@
 'use strict';
 
-const jose = require('jose');
-
-const LICENSE_TOKEN_USE_CLAIM = 'licensechain_license_v1';
-
 /**
- * Node-only: RS256 license_token verification via JWKS (parity with Node SDK).
- * @param {string} token
- * @param {string} jwksUrl
- * @param {{ expectedAppId?: string, issuer?: string }} [options]
- * @returns {Promise<import('jose').JWTPayload>}
+ * Back-compat: same helpers as package root (`verifyLicenseAssertionJwt`, `LICENSE_TOKEN_USE_CLAIM`).
+ * Prefer `import { verifyLicenseAssertionJwt } from 'licensechain-js-sdk'` or destructuring from `require('licensechain-js-sdk')`.
  */
-async function verifyLicenseAssertionJwt(token, jwksUrl, options = {}) {
-  const JWKS = jose.createRemoteJWKSet(new URL(String(jwksUrl).trim()));
-  const { payload } = await jose.jwtVerify(String(token).trim(), JWKS, {
-    algorithms: ['RS256'],
-    ...(options.issuer ? { issuer: options.issuer } : {}),
-  });
-  if (payload.token_use !== LICENSE_TOKEN_USE_CLAIM) {
-    throw new Error(`Invalid license token: expected token_use "${LICENSE_TOKEN_USE_CLAIM}"`);
-  }
-  if (
-    options.expectedAppId != null &&
-    options.expectedAppId !== '' &&
-    payload.aud !== options.expectedAppId
-  ) {
-    throw new Error('Invalid license token: aud does not match expected app id');
-  }
-  return payload;
-}
+const mod = require('./dist/index.js');
 
 module.exports = {
-  LICENSE_TOKEN_USE_CLAIM,
-  verifyLicenseAssertionJwt,
+  LICENSE_TOKEN_USE_CLAIM: mod.LICENSE_TOKEN_USE_CLAIM,
+  verifyLicenseAssertionJwt: mod.verifyLicenseAssertionJwt,
 };
