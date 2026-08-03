@@ -1,6 +1,6 @@
 {
   "name": "@licensechain/javascript-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Official LicenseChain JavaScript SDK for license management and validation",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
