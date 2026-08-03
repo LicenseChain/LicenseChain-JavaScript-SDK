@@ -1,5 +1,5 @@
 {
-  "name": "licensechain-js-sdk",
+  "name": "@licensechain/javascript-sdk",
   "version": "1.0.0",
   "description": "Official LicenseChain JavaScript SDK for license management and validation",
   "main": "dist/index.js",
@@ -80,5 +80,8 @@
     "axios": {
       "optional": true
     }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -17,11 +17,11 @@ Official JavaScript SDK for LicenseChain - Secure license management for web app
 Root exports match **`licensechain-node-sdk`**: `verifyLicenseAssertionJwt`, `LICENSE_TOKEN_USE_CLAIM`, and `VerifyLicenseAssertionOptions` (TypeScript). Use them after `LicenseService.verifyWithDetails` when the API returns `license_token` and `license_jwks_uri`.
 
 ```javascript
-import { verifyLicenseAssertionJwt } from 'licensechain-js-sdk';
-// or: const { verifyLicenseAssertionJwt } = require('licensechain-js-sdk');
+import { verifyLicenseAssertionJwt } from '@licensechain/javascript-sdk';
+// or: const { verifyLicenseAssertionJwt } = require('@licensechain/javascript-sdk');
 ```
 
-`jose` is a **runtime dependency** (listed in `package.json`); CJS/ESM builds load it from `node_modules`. Legacy **`require('licensechain-js-sdk/license-assertion.cjs')`** still works and delegates to the same implementation.
+`jose` is a **runtime dependency** (listed in `package.json`); CJS/ESM builds load it from `node_modules`. Legacy **`require('@licensechain/javascript-sdk/license-assertion.cjs')`** still works and delegates to the same implementation.
 
 **UMD / CDN:** `dist/index.umd.js` treats `jose` as external; browser bundles that call `verifyLicenseAssertionJwt` must load a compatible `jose` build or use ESM with a bundler that resolves `jose`. Prefer **Node** or **bundled ESM** for JWT verification in production.
 
@@ -42,7 +42,7 @@ import { verifyLicenseAssertionJwt } from 'licensechain-js-sdk';
 
 ```bash
 # Install via npm
-npm install licensechain-sdk
+npm install @licensechain/javascript-sdk
 
 # Or via yarn
 yarn add licensechain-sdk
