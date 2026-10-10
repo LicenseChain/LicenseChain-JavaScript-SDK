@@ -1,6 +1,6 @@
 {
   "name": "@licensechain/javascript-sdk",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Official LicenseChain JavaScript SDK for license management and validation",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -43,7 +43,7 @@
   },
   "homepage": "https://docs.licensechain.app/sdks/javascript",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=20.0.0"
   },
   "dependencies": {
     "axios": "^1.6.0",

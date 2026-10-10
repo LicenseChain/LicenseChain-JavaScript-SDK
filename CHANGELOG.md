@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.2] - 2026-10-10
+
+- Relicensed public surface under Elastic License 2.0 (ELv2).
+- Raised `engines.node` from `>=14` to `>=20`; CI matrix now Node 20 / 22 / 24.
+- Added Dependabot for npm and GitHub Actions.
+
 All notable changes to this SDK are documented in this file.
 
 
