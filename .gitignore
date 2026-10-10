@@ -93,3 +93,4 @@ jspm_packages/
 # Local agent / OPSEC
 .claude/
 CLAUDE.md
+.npm/

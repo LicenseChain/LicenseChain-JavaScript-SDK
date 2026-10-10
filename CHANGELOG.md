@@ -2,6 +2,13 @@
 
 All notable changes to this SDK are documented in this file.
 
+
+## [1.0.2] - 2026-10-10
+
+- Public SDK surface licensed under Elastic License 2.0 (ELv2).
+- Repository hygiene confirmed: ROADMAP.md, CHANGELOG.md, and .gitignore present for contributor onboarding.
+- Documented Elastic-2.0 package metadata follow-up for scoped npm package publishing readiness (manual npm publish still required).
+
 ## [Unreleased]
 
 - Root exports: `verifyLicenseAssertionJwt`, `LICENSE_TOKEN_USE_CLAIM`, and `VerifyLicenseAssertionOptions` — parity with `licensechain-node-sdk` (`src/license-assertion.ts`). Rollup marks `jose` as external for CJS/ESM. `license-assertion.cjs` re-exports from `dist/index.js` for back-compat.
