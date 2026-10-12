@@ -477,7 +477,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 ### Development Setup
 
 1. Clone the repository
-2. Install Node.js 16 or later
+2. Install Node.js 20 or later
 3. Install dependencies: `npm install`
 4. Build: `npm run build`
 5. Test: `npm test`
