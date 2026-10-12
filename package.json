@@ -1,6 +1,6 @@
 {
   "name": "@licensechain/javascript-sdk",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Official LicenseChain JavaScript SDK for license management and validation",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -41,7 +41,8 @@
   "bugs": {
     "url": "https://github.com/LicenseChain/LicenseChain-JavaScript-SDK/issues"
   },
-  "homepage": "https://docs.licensechain.app/sdks/javascript",
+  "homepage": "https://docs.licensechain.app/en/sdk",
+
   "engines": {
     "node": ">=20.0.0"
   },

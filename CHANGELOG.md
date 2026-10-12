@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.3] - 2026-10-11
+
+- Fixed npm badge URL encoding for `@licensechain/javascript-sdk`; removed broken Bundlephobia badge.
+- Corrected homepage and install/import snippets to the scoped package name and docs.licensechain.app/en/sdk.
+
 ## [1.0.2] - 2026-10-10
 
 - Relicensed public surface under Elastic License 2.0 (ELv2).

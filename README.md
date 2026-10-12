@@ -2,8 +2,8 @@
 
 [![License](https://img.shields.io/badge/license-Elastic--2.0-blue.svg)](LICENSE)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-blue.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![npm](https://img.shields.io/npm/v/licensechain-sdk)](https://www.npmjs.com/package/licensechain-sdk)
-[![Bundle Size](https://img.shields.io/bundlephobia/minzip/licensechain-sdk)](https://bundlephobia.com/result?p=licensechain-sdk)
+[![npm](https://img.shields.io/npm/v/%40licensechain%2Fjavascript-sdk)](https://www.npmjs.com/package/@licensechain/javascript-sdk)
+[![Node.js](https://img.shields.io/badge/Node.js-20+-green.svg)](https://nodejs.org/)
 
 Official JavaScript SDK for LicenseChain - Secure license management for web applications.
 
@@ -45,7 +45,7 @@ import { verifyLicenseAssertionJwt } from '@licensechain/javascript-sdk';
 npm install @licensechain/javascript-sdk
 
 # Or via yarn
-yarn add licensechain-sdk
+yarn add @licensechain/javascript-sdk
 ```
 
 ### Method 2: CDN
@@ -53,11 +53,11 @@ yarn add licensechain-sdk
 ```html
 <!-- ES6 Module -->
 <script type="module">
-  import LicenseChain from 'https://cdn.skypack.dev/licensechain-sdk';
+  import LicenseChain from 'https://cdn.skypack.dev/@licensechain/javascript-sdk';
 </script>
 
 <!-- UMD -->
-<script src="https://unpkg.com/licensechain-sdk/dist/index.umd.js"></script>
+<script src="https://unpkg.com/@licensechain/javascript-sdk/dist/index.umd.js"></script>
 ```
 
 ### Method 3: Manual Installation
@@ -71,7 +71,7 @@ yarn add licensechain-sdk
 ### Basic Setup
 
 ```javascript
-import LicenseChain from 'licensechain-sdk';
+import LicenseChain from '@licensechain/javascript-sdk';
 
 // Initialize the client
 const client = new LicenseChain({
@@ -488,7 +488,7 @@ This project is licensed under the Elastic License 2.0 (ELv2) — see the [LICEN
 
 ## 🆘 Support
 
-- **Documentation**: [https://docs.licensechain.app/sdks/javascript](https://docs.licensechain.app/sdks/javascript)
+- **Documentation**: [https://docs.licensechain.app/en/sdk](https://docs.licensechain.app/en/sdk)
 - **Issues**: [GitHub Issues](https://github.com/LicenseChain/LicenseChain-JavaScript-SDK/issues)
 - **Discord**: [LicenseChain Discord](https://discord.gg/licensechain)
 - **Email**: support@licensechain.app
