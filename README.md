@@ -3,6 +3,7 @@
 [![License](https://img.shields.io/badge/license-Elastic--2.0-blue.svg)](LICENSE)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-blue.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![npm](https://img.shields.io/npm/v/%40licensechain%2Fjavascript-sdk)](https://www.npmjs.com/package/@licensechain/javascript-sdk)
+[![Downloads](https://img.shields.io/npm/dm/%40licensechain%2Fjavascript-sdk)](https://www.npmjs.com/package/@licensechain/javascript-sdk)
 [![Node.js](https://img.shields.io/badge/Node.js-20+-green.svg)](https://nodejs.org/)
 [![CI](https://github.com/LicenseChain/LicenseChain-JavaScript-SDK/actions/workflows/ci.yml/badge.svg)](https://github.com/LicenseChain/LicenseChain-JavaScript-SDK/actions/workflows/ci.yml)
 
