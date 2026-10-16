@@ -1,82 +1,67 @@
-import { babel } from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
-import typescript from 'rollup-plugin-typescript2';
+import typescript from '@rollup/plugin-typescript';
 import dts from 'rollup-plugin-dts';
 import fs from 'node:fs';
 
 const packageJson = JSON.parse(fs.readFileSync(new URL('./package.json', import.meta.url), 'utf8'));
 
-const baseConfig = {
-  input: 'src/index.ts',
-  external: ['axios', 'crypto-js', 'jose'],
-  plugins: [
-    nodeResolve({
-      preferBuiltins: false,
+function buildPlugins({ minify = false, declarations = false } = {}) {
+  const plugins = [
+    typescript({
+      tsconfig: './tsconfig.json',
+      declaration: declarations,
+      declarationDir: declarations ? 'dist' : undefined,
+      sourceMap: true,
     }),
+    nodeResolve({ preferBuiltins: false }),
     commonjs(),
-    babel({
-      babelHelpers: 'bundled',
-      exclude: 'node_modules/**',
-      presets: [['@babel/preset-env', { targets: { node: '14' } }]],
-    }),
-  ],
-};
+  ];
+  if (minify) plugins.push(terser());
+  return plugins;
+}
+
+const external = ['axios', 'crypto-js', 'jose', 'crypto'];
 
 export default [
-  // CommonJS build
   {
-    ...baseConfig,
+    input: 'src/index.ts',
+    external,
     output: {
       file: packageJson.main,
       format: 'cjs',
       exports: 'named',
       sourcemap: true,
     },
-    plugins: [
-      ...baseConfig.plugins,
-      typescript({
-        tsconfig: 'tsconfig.json',
-        useTsconfigDeclarationDir: true,
-      }),
-    ],
+    plugins: buildPlugins({ declarations: true }),
   },
-  // ES Module build
   {
-    ...baseConfig,
+    input: 'src/index.ts',
+    external,
     output: {
       file: packageJson.module,
       format: 'es',
       sourcemap: true,
     },
-    plugins: [
-      ...baseConfig.plugins,
-      typescript({
-        tsconfig: 'tsconfig.json',
-        useTsconfigDeclarationDir: true,
-      }),
-    ],
+    plugins: buildPlugins(),
   },
-  // UMD build (minified)
   {
-    ...baseConfig,
+    input: 'src/index.ts',
+    external,
     output: {
       file: 'dist/index.umd.js',
       format: 'umd',
       name: 'LicenseChain',
+      globals: {
+        axios: 'axios',
+        'crypto-js': 'CryptoJS',
+        jose: 'jose',
+      },
       sourcemap: true,
     },
-    plugins: [
-      ...baseConfig.plugins,
-      typescript({
-        tsconfig: 'tsconfig.json',
-        useTsconfigDeclarationDir: true,
-      }),
-      terser(),
-    ],
+    plugins: buildPlugins({ minify: true }),
   },
-  // TypeScript definitions
   {
     input: 'src/index.ts',
     output: {
@@ -87,4 +72,3 @@ export default [
     external: [/\.css$/],
   },
 ];
-
