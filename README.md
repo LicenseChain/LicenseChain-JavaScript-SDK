@@ -16,7 +16,7 @@ Official JavaScript SDK for LicenseChain - Secure license management for web app
 - API docs: [docs.licensechain.app](https://docs.licensechain.app/)
 ## License assertion JWT (RS256 + JWKS)
 
-Root exports match **`licensechain-node-sdk`**: `verifyLicenseAssertionJwt`, `LICENSE_TOKEN_USE_CLAIM`, and `VerifyLicenseAssertionOptions` (TypeScript). Use them after `LicenseService.verifyWithDetails` when the API returns `license_token` and `license_jwks_uri`.
+Root exports match **`@licensechain/nodejs-sdk`**: `verifyLicenseAssertionJwt`, `LICENSE_TOKEN_USE_CLAIM`, and `VerifyLicenseAssertionOptions` (TypeScript). Use them after `LicenseService.verifyWithDetails` when the API returns `license_token` and `license_jwks_uri`.
 
 ```javascript
 import { verifyLicenseAssertionJwt } from '@licensechain/javascript-sdk';

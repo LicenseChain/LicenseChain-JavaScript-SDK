@@ -2,7 +2,7 @@
 
 /**
  * Back-compat: same helpers as package root (`verifyLicenseAssertionJwt`, `LICENSE_TOKEN_USE_CLAIM`).
- * Prefer `import { verifyLicenseAssertionJwt } from 'licensechain-js-sdk'` or destructuring from `require('licensechain-js-sdk')`.
+ * Prefer `import { verifyLicenseAssertionJwt } from '@licensechain/javascript-sdk'` or destructuring from `require('@licensechain/javascript-sdk')`.
  */
 const mod = require('./dist/index.js');
 

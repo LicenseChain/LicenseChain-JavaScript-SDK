@@ -16,7 +16,7 @@ export { WebhookHandler, WebhookEvents, createOutgoingWebhookSignature, verifyIn
 // License validation
 export { LicenseValidator } from './license-validator';
 
-// License assertion JWT (RS256 + JWKS) — parity with licensechain-node-sdk root exports
+// License assertion JWT (RS256 + JWKS) — parity with @licensechain/nodejs-sdk root exports
 export {
   LICENSE_TOKEN_USE_CLAIM,
   verifyLicenseAssertionJwt,

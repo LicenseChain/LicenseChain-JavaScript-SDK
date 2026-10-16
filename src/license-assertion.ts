@@ -13,7 +13,7 @@ export type VerifyLicenseAssertionOptions = {
 /**
  * Verify a `license_token` from POST /v1/licenses/verify using the JWKS URL
  * from the same response (`license_jwks_uri`) or `GET /v1/licenses/jwks`.
- * Same contract as `licensechain-node-sdk` — also exported from the package root (`dist/index.js`).
+ * Same contract as `@licensechain/nodejs-sdk` — also exported from the package root (`dist/index.js`).
  */
 export async function verifyLicenseAssertionJwt(
   token: string,
