@@ -42,12 +42,11 @@
     "url": "https://github.com/LicenseChain/LicenseChain-JavaScript-SDK/issues"
   },
   "homepage": "https://docs.licensechain.app/en/sdk",
-
   "engines": {
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "axios": "^1.6.0",
+    "axios": "^1.20.0",
     "crypto-js": "^4.2.0",
     "jose": "^6.2.12"
   },
@@ -71,9 +70,6 @@
     "rollup-plugin-dts": "^6.1.0",
     "rollup-plugin-typescript2": "^0.36.0",
     "typescript": "^5.3.2"
-  },
-  "peerDependencies": {
-    "axios": "^1.6.0"
   },
   "peerDependenciesMeta": {
     "axios": {
