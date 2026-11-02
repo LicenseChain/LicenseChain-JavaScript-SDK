@@ -1,6 +1,6 @@
 # LicenseChain JavaScript SDK
 
-[![License](https://img.shields.io/badge/license-Elastic--2.0-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-blue.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![npm](https://img.shields.io/npm/v/%40licensechain%2Fjavascript-sdk)](https://www.npmjs.com/package/@licensechain/javascript-sdk)
 [![Downloads](https://img.shields.io/npm/dm/%40licensechain%2Fjavascript-sdk)](https://www.npmjs.com/package/@licensechain/javascript-sdk)
@@ -483,7 +483,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ## 📄 License
 
-This project is licensed under the Elastic License 2.0 (ELv2) — see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License (ELv2) — see the [LICENSE](LICENSE) file for details.
 
 ## 🆘 Support
 

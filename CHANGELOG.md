@@ -7,8 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed Jest under Node 24+ for ESM-only `jose` by enabling `--experimental-vm-modules` in the test script.
+
 - Switched Rollup to `@rollup/plugin-typescript` so TypeScript builds on CI; regenerated `package-lock.json` for `npm ci`.
 - Pinned vulnerable transitive floors (`serialize-javascript`, `minimatch`, `js-yaml`, `brace-expansion`) and upgraded the ESLint toolchain.
+- Jest unit tests load CJS `dist` against ESM-only `jose` via `NODE_OPTIONS=--experimental-vm-modules` (Node 20+).
 
 ## [1.0.3] - 2026-10-11
 
